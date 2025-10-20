@@ -17,7 +17,10 @@ import random
 # q = 11
 # k = 11
 # a = 11
-
+class player:
+    def __init__(self, username, cards):
+        self.username = username
+        self.cards = cards
 
 ordered_Deck = [["AcS", "AcH", "AcD", "AcC"]
     , ["02S", "02H", "02D", "02C"]
@@ -91,8 +94,14 @@ def ShuffleDeck(standard_Deck):
 def CardIntegration(player, nCards):
     global shuffled_Deck
     global head
+    found = False
     for i in range(nCards):
-        card = input("Input card")
+        while not found:
+            card = input("Input card")
+            if shuffled_Deck.count(card) == 1:
+                found = True
+            else:
+                print("Card does not exist in deck")
         shuffled_Deck.remove(card)
         player.append(card)
     head -= nCards
@@ -113,16 +122,15 @@ def DealCards(player, nCards):
 #gamemode is either poker or blackjack
 gamemode = "blackjack"
 
-
 def CardValue(card, gamemode):
     value = card[0:2]
-    if int(value) <= 10:
-        value = int(value)
-    elif gamemode == "blackjack":
+    if gamemode == "blackjack":
         if value == "Ac":
             value = 11
-        else:
+        elif value in ["Ki", "Qu", "Ja"]:
             value = 10
+        else:
+            value = int(value)
     elif gamemode == "poker":
         if value == "Ac":
             value = 14
@@ -133,13 +141,14 @@ def CardValue(card, gamemode):
         elif value == "Ja":
             value = 11
         else:
-            print("card value error")
+            value = int(value)
     else:
         print("gamemode error")
 
+    return value
+def CardSuit(card):
     suit = card[2:]
-    return value, suit
-
+    return suit
 
 #print(standard_Deck[ace][spades])
 
@@ -163,5 +172,5 @@ def CardValue(card, gamemode):
 # print(card)
 # print(card[0:2])
 # print(card[2:])
-
-print(CardValue("AcS","poker"))
+CardValue("AcS","poker")
+print()
