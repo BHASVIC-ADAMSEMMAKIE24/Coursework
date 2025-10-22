@@ -3,25 +3,6 @@ import random
 # This improves code reusability as the values inside the array change instead making a whole new array
 # when cards are being delt they will be stored as a queue (FIFO)
 # #def bjValues():
-# one = 1
-# two = 2
-# three = 3
-# four = 4
-# five = 5
-# six = 6
-# seven = 7
-# eight = 8
-# nine = 9
-# ten = 10
-# j = 11
-# q = 11
-# k = 11
-# a = 11
-class player:
-    def __init__(self, username, cards):
-        self.username = username
-        self.cards = cards
-
 ordered_Deck = [["AcS", "AcH", "AcD", "AcC"]
     , ["02S", "02H", "02D", "02C"]
     , ["03S", "03H", "03D", "03C"]
