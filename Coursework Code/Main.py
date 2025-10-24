@@ -1,3 +1,18 @@
+import random
+
+
+
+###########################
+#   pointers
+##########################
+#queue pointers
+tail = 0
+head = 51
+
+
+
+
+
 # _USER
 dealerUser = "Dealer"
 player1User = "Player 1"
@@ -22,12 +37,12 @@ player1Result = ""
 player2Result = ""
 player3Result = ""
 player4Result = ""
-#            _USER         _CURRENCY     _CARDS      _RESULT
-player1 = [player1User,player1Currency,player1Cards,player1Result]
-player2 = [player2User,player2Currency,player2Cards,player2Result]
-player3 = [player3User,player3Currency,player3Cards,player3Result]
-player4 = [player4User,player4Currency,player4Cards,player4Result]
-dealer = [dealerUser  ,dealersPot       ,dealerCards ,dealerResult]
+#            _USER         _CURRENCY        _CARDS       _RESULT
+player1 = [player1User, player1Currency, player1Cards, player1Result]
+player2 = [player2User, player2Currency, player2Cards, player2Result]
+player3 = [player3User, player3Currency, player3Cards, player3Result]
+player4 = [player4User, player4Currency, player4Cards, player4Result]
+dealer  = [dealerUser,       dealersPot,  dealerCards,  dealerResult]
 
-players = [player1,player2,player3,player4]
+players = [player1, player2, player3, player4]
 

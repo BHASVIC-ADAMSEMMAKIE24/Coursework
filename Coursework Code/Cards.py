@@ -24,6 +24,7 @@ ORDEREDDECK =   [["AcS", "AcH", "AcD", "AcC"]  # [0]   Ace
 
 #ordered_Deck[value][suit]
 #print(ordered_Deck[ace][spades])
+
 STANDARDDECK =  ["AcS", "AcH", "AcD", "AcC"
                 , "02S", "02H", "02D", "02C"
                 , "03S", "03H", "03D", "03C"
@@ -77,6 +78,7 @@ def ShuffleDeck(STANDARDDECK):
     tail = 0
     shuffledDeck = STANDARDDECK
     random.shuffle(shuffledDeck)
+
 
 
 def CardIntegration(playerCards, nCards):
