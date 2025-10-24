@@ -1,103 +1,110 @@
 import random
 
-# This improves code reusability as the values inside the array change instead making a whole new array
-# when cards are being delt they will be stored as a queue (FIFO)
-# #def bjValues():
-ordered_Deck = [["AcS", "AcH", "AcD", "AcC"]
-    , ["02S", "02H", "02D", "02C"]
-    , ["03S", "03H", "03D", "03C"]
-    , ["04S", "04H", "04D", "04C"]
-    , ["05S", "05H", "05D", "05C"]
-    , ["06S", "06H", "06D", "06C"]
-    , ["07S", "07H", "07D", "07C"]
-    , ["08S", "08H", "08D", "08C"]
-    , ["09S", "09H", "09D", "09C"]
-    , ["10S", "10H", "10D", "10C"]
-    , ["JaS", "JaH", "JaD", "JaC"]
-    , ["QuS", "QuH", "QuD", "QuC"]
-    , ["KiS", "KiH", "KiD", "KiC"]]
-# Value
-ace = 0
-two = 1
-three = 2
-four = 3
-five = 4
-six = 5
-seven = 6
-eight = 7
-nine = 8
-ten = 9
-jack = 10
-queen = 11
-king = 12
-# Suit
-spades = 0
-hearts = 1
-diamond = 2
-clubs = 3
+# variables = camelCase
+# parameters = camelCase
+# bool variables = is_camelCase
+# constants = UPPERCASE
+# subroutines/functions = PascalCase
+        #Suits:   Spades Hearts Diamonds Clubs
+        #Index:     [0]    [1]    [2]    [3]     Index Value
+ORDEREDDECK =   [["AcS", "AcH", "AcD", "AcC"]  # [0]   Ace
+                , ["02S", "02H", "02D", "02C"]  # [1]   Two
+                , ["03S", "03H", "03D", "03C"]  # [2]   Three
+                , ["04S", "04H", "04D", "04C"]  # [3]   Four
+                , ["05S", "05H", "05D", "05C"]  # [4]   Five
+                , ["06S", "06H", "06D", "06C"]  # [5]   Six
+                , ["07S", "07H", "07D", "07C"]  # [6]   Seven
+                , ["08S", "08H", "08D", "08C"]  # [7]   Eight
+                , ["09S", "09H", "09D", "09C"]  # [8]   Nine
+                , ["10S", "10H", "10D", "10C"]  # [9]   Ten
+                , ["JaS", "JaH", "JaD", "JaC"]  # [10]  Jack
+                , ["QuS", "QuH", "QuD", "QuC"]  # [11]  Queen
+                , ["KiS", "KiH", "KiD", "KiC"]] # [12]  King
+
+
 #ordered_Deck[value][suit]
 #print(ordered_Deck[ace][spades])
-standard_Deck = ["AcS", "AcH", "AcD", "AcC"
-    , "02S", "02H", "02D", "02C"
-    , "03S", "03H", "03D", "03C"
-    , "04S", "04H", "04D", "04C"
-    , "05S", "05H", "05D", "05C"
-    , "06S", "06H", "06D", "06C"
-    , "07S", "07H", "07D", "07C"
-    , "08S", "08H", "08D", "08C"
-    , "09S", "09H", "09D", "09C"
-    , "10S", "10H", "10D", "10C"
-    , "JaS", "JaH", "JaD", "JaC"
-    , "QuS", "QuH", "QuD", "QuC"
-    , "KiS", "KiH", "KiD", "KiC"
+STANDARDDECK =  ["AcS", "AcH", "AcD", "AcC"
+                , "02S", "02H", "02D", "02C"
+                , "03S", "03H", "03D", "03C"
+                , "04S", "04H", "04D", "04C"
+                , "05S", "05H", "05D", "05C"
+                , "06S", "06H", "06D", "06C"
+                , "07S", "07H", "07D", "07C"
+                , "08S", "08H", "08D", "08C"
+                , "09S", "09H", "09D", "09C"
+                , "10S", "10H", "10D", "10C"
+                , "JaS", "JaH", "JaD", "JaC"
+                , "QuS", "QuH", "QuD", "QuC"
+                , "KiS", "KiH", "KiD", "KiC"
                  ]
-tail = 0
-head = 51
-player1 = []
-player2 = []
-player3 = []
-player4 = []
-dealer = []
 
+dealerUser = "Dealer"
+player1User = "Player 1"
+player2User = "Player 2"
+player3User = "Player 3"
+player4User = "Player 4"
+totalPot = 0
+player1Currency = 2000
+player2Currency = 2000
+player3Currency = 2000
+player4Currency = 2000
+dealerCards = []
+player1Cards = []
+player2Cards = []
+player3Cards = []
+player4Cards = []
+dealerResult = ""
+player1Result = ""
+player2Result = ""
+player3Result = ""
+player4Result = ""
+player1 = [player1User,player1Currency,player1Cards,player1Result]
+player2 = [player2User,player2Currency,player2Cards,player2Result]
+player3 = [player3User,player3Currency,player3Cards,player3Result]
+player4 = [player4User,player4Currency,player4Cards,player4Result]
+dealer = [dealerUser,totalPot,dealerCards,dealerResult]
+players = [player1,player2,player3,player4]
 
 #queue pointers
-
-def ShuffleDeck(standard_Deck):
-    global shuffled_Deck
+tail = 0
+head = 51
+def ShuffleDeck(STANDARDDECK):
+    global shuffledDeck
     global head
     global tail
     head = 51
     tail = 0
-    shuffled_Deck = standard_Deck
-    random.shuffle(shuffled_Deck)
+    shuffledDeck = STANDARDDECK
+    random.shuffle(shuffledDeck)
 
 
-def CardIntegration(player, nCards):
-    global shuffled_Deck
+def CardIntegration(playerCards, nCards):
+    global shuffledDeck
     global head
     found = False
     for i in range(nCards):
         while not found:
-            card = input("Input card")
-            if shuffled_Deck.count(card) == 1:
+            card = str(input("Input card: "))
+            if shuffledDeck.count(card) == 1:
                 found = True
             else:
                 print("Card does not exist in deck")
-        shuffled_Deck.remove(card)
-        player.append(card)
+        shuffledDeck.remove(card)
+        playerCards.append(card)
     head -= nCards
-    return player
+    return playerCards
 
 
-def DealCards(player, nCards):
-    global shuffled_Deck
+def DealCards(playerCards, nCards):
+    global shuffledDeck
     global head
     for i in range(nCards):
-        card = shuffled_Deck[head]
-        shuffled_Deck.pop(head)
+        card = shuffledDeck[head]
+        shuffledDeck.pop(head)
         head -= 1
-        player.append(card)
-    return player
+        playerCards.append(card)
+    return playerCards
 
 
 #gamemode is either poker or blackjack
@@ -131,14 +138,14 @@ def CardSuit(card):
     suit = card[2:]
     return suit
 
-#print(standard_Deck[ace][spades])
+#print(STANDARDDECK[ace][spades])
 
-# print(shuffled_Deck)
-# ShuffleDeck(standard_Deck)
-# print(shuffled_Deck[0])
+# print(shuffledDeck)
+# ShuffleDeck(STANDARDDECK)
+# print(shuffledDeck[0])
 #print(str(cards[0][1]) , str(cards[1][0]))
 
-# ShuffleDeck(standard_Deck)
+# ShuffleDeck(STANDARDDECK)
 # DealCards(player1,1)
 # # DealCards(player2,2)
 # # DealCards(player3,2)
@@ -147,11 +154,18 @@ def CardSuit(card):
 # # print(player2)
 # # print(player3)
 # # print(player4)
-# # print(shuffled_Deck)
-# # print(len(shuffled_Deck))
+# # print(shuffledDeck)
+# # print(len(shuffledDeck))
 # card = player1[0]
 # print(card)
 # print(card[0:2])
 # print(card[2:])
-CardValue("AcS","poker")
-print()
+# CardValue("AcS","poker")
+
+# print("Username: ", players[0][0])
+# print("Cards: ", CardValue(players[0][1][1], gamemode)+CardValue(players[0][1][0], gamemode))
+players.remove(player4)
+print(player4[0])
+print(len(players))
+players.append(player4)
+print(len(players))
