@@ -12,7 +12,8 @@ import random
 ## ############################################## ##
 ####################################################
 
-
+        #Suits:   Spades Hearts Diamonds Clubs
+        #Index:     [0]    [1]    [2]    [3]     Index Value
 ORDEREDDECK =   [["AcS", "AcH", "AcD", "AcC"]  # [0]   Ace
                 , ["02S", "02H", "02D", "02C"]  # [1]   Two
                 , ["03S", "03H", "03D", "03C"]  # [2]   Three
@@ -26,7 +27,6 @@ ORDEREDDECK =   [["AcS", "AcH", "AcD", "AcC"]  # [0]   Ace
                 , ["JaS", "JaH", "JaD", "JaC"]  # [10]  Jack
                 , ["QuS", "QuH", "QuD", "QuC"]  # [11]  Queen
                 , ["KiS", "KiH", "KiD", "KiC"]] # [12]  King
-
 
 #ordered_Deck[value][suit]
 #print(ordered_Deck[ace][spades])
@@ -45,36 +45,45 @@ STANDARDDECK =  ["AcS", "AcH", "AcD", "AcC"
                 , "KiS", "KiH", "KiD", "KiC"
                  ]
 
+
+
+
+
+
+
+# _USER
 dealerUser = "Dealer"
 player1User = "Player 1"
 player2User = "Player 2"
 player3User = "Player 3"
 player4User = "Player 4"
-totalPot = 0
+# _CURRENCY
+dealersPot = [0,0,0,0]
 player1Currency = 2000
 player2Currency = 2000
 player3Currency = 2000
 player4Currency = 2000
+# _CARDS
 dealerCards = []
 player1Cards = []
 player2Cards = []
 player3Cards = []
 player4Cards = []
+# _RESULT
 dealerResult = ""
 player1Result = ""
 player2Result = ""
 player3Result = ""
 player4Result = ""
-player1 = [player1User,player1Currency,player1Cards,player1Result]
-player2 = [player2User,player2Currency,player2Cards,player2Result]
-player3 = [player3User,player3Currency,player3Cards,player3Result]
-player4 = [player4User,player4Currency,player4Cards,player4Result]
-dealer = [dealerUser,totalPot,dealerCards,dealerResult]
-players = [player1,player2,player3,player4]
+#            _USER         _CURRENCY        _CARDS       _RESULT
+player1 = [player1User, player1Currency, player1Cards, player1Result]
+player2 = [player2User, player2Currency, player2Cards, player2Result]
+player3 = [player3User, player3Currency, player3Cards, player3Result]
+player4 = [player4User, player4Currency, player4Cards, player4Result]
+dealer  = [dealerUser,       dealersPot,  dealerCards,  dealerResult]
 
-#queue pointers
-tail = 0
-head = 51
+players = [player1, player2, player3, player4]
+
 def ShuffleDeck(STANDARDDECK):
     global shuffledDeck
     global head
@@ -141,6 +150,13 @@ def CardValue(card, gamemode):
         print("gamemode error")
 
     return value
+
+def CardTotal(deck,gamemode):
+    total = 0
+    for i in range(len(deck)-1):
+        total += CardValue(deck[i], gamemode)
+    return total
+
 def CardSuit(card):
     suit = card[2:]
     return suit
@@ -162,4 +178,42 @@ player1Cards = []
 player2Cards = []
 player3Cards = []
 player4Cards = []
+
+
+def BlackjackAnte(players,dealersPot):
+    for i in range(len(players)-1): # loops through each player
+        print("Your currency: " + players[i][_CURRENCY]) # displays currency to user
+        dealersPot[i] = int(input("Enter ante bet: ")) # takes integer value of players ante bet
+        players[i][_CURRENCY] -= dealersPot # subtracts ante from players currency
+    return players, dealersPot
+# testing
+# print(players[i][_CURRENCY])
+# BlackJackAnte(players,dealersPot)
+# print(players[i][_CURRENCY])
+
+def BlackjackHitStandCycle(players):
+    for i in range(len(players)-1):  # loops through each player
+        print(players[i][_USER], " turn") # outputs which players current turn
+        choice = "hit"
+        while players[i][_RESULT] != "Bust" and choice.lower() == "hit":
+            choice = input("Hit or Stand: ")
+            if choice.lower() == "hit":
+                DealCards(players[i][_CARDS],1) # deals the player a card
+                print(players[i][_CARDS])   # outputs the new deck
+                if int(CardTotal(players[i][_CARDS], "blackjack")) > 21:
+                    players[i][_RESULT] = "Bust"
+                    print(players[i][_RESULT])
+
+            elif choice.lower() == "stand": # here to be edited when implementing the GUI
+                print("")
+        print(players[i][_USER] , " turn ended")
+    print("All player turns have ended")
+    return players
+
+
+
+
+
+
+
 
