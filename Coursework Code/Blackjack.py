@@ -75,6 +75,12 @@ player1Result = ""
 player2Result = ""
 player3Result = ""
 player4Result = ""
+
+# player constants
+_USER = 0
+_CURRENCY = 1
+_CARDS = 2
+_RESULT = 3
 #            _USER         _CURRENCY        _CARDS       _RESULT
 player1 = [player1User, player1Currency, player1Cards, player1Result]
 player2 = [player2User, player2Currency, player2Cards, player2Result]
@@ -151,12 +157,13 @@ def CardValue(card, gamemode):
 
     return value
 
-def CardTotal(deck,gamemode):
-    total = 0
-    for i in range(len(deck)-1):
-        total += CardValue(deck[i], gamemode)
+def CardTotal(deck):
+    total = 0 # initialises total
+    for i in range(len(deck)): # cycles through each card in the players deck
+        total += CardValue(deck[i], "blackjack") # adds the cards value on to the current total
     return total
 
+CardTotal(players[0][_CARDS])
 def CardSuit(card):
     suit = card[2:]
     return suit
@@ -181,18 +188,24 @@ player4Cards = []
 
 
 def BlackjackAnte(players,dealersPot):
-    for i in range(len(players)-1): # loops through each player
-        print("Your currency: " + players[i][_CURRENCY]) # displays currency to user
+    for i in range(len(players)): # loops through each player
+        print("Your currency: " + str(players[i][_CURRENCY])) # displays currency to user
         dealersPot[i] = int(input("Enter ante bet: ")) # takes integer value of players ante bet
-        players[i][_CURRENCY] -= dealersPot # subtracts ante from players currency
+        while players[i][_CURRENCY] < dealersPot[i] or dealersPot[i] < 0:
+            print("Invalid bet") # while loop prevents negative bets and bets above the players available currency
+            dealersPot[i] = int(input("Enter ante bet: ")) # forced to enter a valid bet
+        players[i][_CURRENCY] -= dealersPot[i] # subtracts ante from players currency after bet is validated
     return players, dealersPot
-# testing
-# print(players[i][_CURRENCY])
-# BlackJackAnte(players,dealersPot)
-# print(players[i][_CURRENCY])
+
+# test
+# for i in range(len(players)): # displaying each players currency before ante changes
+#     print(players[i][_CURRENCY])
+# BlackjackAnte(players,dealersPot) # calling upon subroutine
+# for i in range(len(players)): # displaying each players currency after ante changes
+#     print(players[i][_CURRENCY])
 
 def BlackjackHitStandCycle(players):
-    for i in range(len(players)-1):  # loops through each player
+    for i in range(len(players)):  # loops through each player
         print(players[i][_USER], " turn") # outputs which players current turn
         choice = "hit"
         while players[i][_RESULT] != "Bust" and choice.lower() == "hit":
