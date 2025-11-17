@@ -160,7 +160,7 @@ def CardValue(card, gamemode):
 def CardTotal(deck):
     total = 0 # initialises total
     for i in range(len(deck)): # cycles through each card in the players deck
-        total += CardValue(deck[i], "blackjack") # adds the cards value on to the current total
+        total += int(CardValue(deck[i], "blackjack")) # adds the cards value on to the current total
     return total
 
 CardTotal(players[0][_CARDS])
@@ -222,6 +222,53 @@ def BlackjackHitStandCycle(players):
         print(players[i][_USER] , " turn ended")
     print("All player turns have ended")
     return players
+
+
+def BlackjackResult(players,dealerResult):
+    dealerCardTotal = CardTotal(dealerCards)
+    if dealerCardTotal > 21:
+        dealerResult = "Bust"
+    for i in range(len(players)):
+        if players[i][_RESULT] != "Bust":
+            if dealerResult == "Bust":
+                players[i][_RESULT] = "Win"
+            else:
+                if CardTotal(players[i][_CARDS]) < dealerCardTotal:
+                    players[i][_RESULT] = "Loss"
+                elif CardTotal(players[i][_CARDS]) == dealerCardTotal:
+                    players[i][_RESULT] = "Draw"
+                else:
+                    players[i][_RESULT] = "Win"
+    return players, dealerResult
+
+def BlackjackRound(players,dealer,isCardIntegration):
+    ## Reseting variables for start of new round
+    dealer[_CARDS] = []
+    dealer[_CURRENCY] = [0, 0, 0, 0]
+    for i in range(len(players)):
+        players[i][_CARDS] = []
+    ShuffleDeck(STANDARDDECK)
+    BlackjackAnte(players,dealersPot)
+    if isCardIntegration:
+        for i in range(len(players)):
+            CardIntegration(players[i][_CARDS],2)
+    elif not isCardIntegration:
+        for i in range(len(players)):
+            DealCards(players[i][_CARDS],2)
+    DealCards(dealer[_CARDS], 2)
+    ## Outputting players cards
+    for i in range(len(players)):
+        print(players[i][_USER],"Cards: ", players[i][_CARDS])
+    BlackjackHitStandCycle(players)
+    ## output dealer cards
+    ## dealer hit stand cycle
+    BlackjackResult(players, dealerResult)
+    # CalculateWinnings()
+
+
+
+
+
 
 
 
