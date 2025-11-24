@@ -242,7 +242,7 @@ def BlackjackResult(players,dealerResult):
     return players, dealerResult
 
 def BlackjackRound(players,dealer,isCardIntegration):
-    ## Reseting variables for start of new round
+    # Reseting variables for start of new round
     dealer[_CARDS] = []
     dealer[_CURRENCY] = [0, 0, 0, 0]
     for i in range(len(players)):
@@ -256,14 +256,26 @@ def BlackjackRound(players,dealer,isCardIntegration):
         for i in range(len(players)):
             DealCards(players[i][_CARDS],2)
     DealCards(dealer[_CARDS], 2)
-    ## Outputting players cards
+    ### Outputting players cards and one dealer card
+    print(dealer[_USER] , "Cards:",dealer[_CARDS][0], "???")
     for i in range(len(players)):
         print(players[i][_USER],"Cards: ", players[i][_CARDS])
     BlackjackHitStandCycle(players)
-    ## output dealer cards
-    ## dealer hit stand cycle
+    ### output dealer cards
+    print(dealer[_USER], "Cards:",dealer[_CARDS])
+    # Dealer hit stand cycle
+    if CardTotal(dealer[_CARDS]) < 17:
+        DealCards(dealer[_CARDS], 1)
+        while CardTotal(dealer[_CARDS]) < 17:
+            DealCards(dealer[_CARDS], 1)
     BlackjackResult(players, dealerResult)
-    # CalculateWinnings()
+    ## CalculateWinnings()
+    ### Output players result and dealer result
+    print(dealer[_USER], "Result:",dealer[_RESULT])
+    for i in range(len(players)):
+        print(players[i][_USER],"Result: ", players[i][_RESULT])
+    ##    print("Fries: ", players[i][_CURRENCY])
+    return player1Currency, player2Currency, player3Currency, player4Currency
 
 
 
