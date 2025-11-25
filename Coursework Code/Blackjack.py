@@ -44,13 +44,20 @@ STANDARDDECK =  ["AcS", "AcH", "AcD", "AcC"
                 , "QuS", "QuH", "QuD", "QuC"
                 , "KiS", "KiH", "KiD", "KiC"
                  ]
-
-
-
-
-
-
-
+shuffledDeck =  ["AcS", "AcH", "AcD", "AcC"
+                , "02S", "02H", "02D", "02C"
+                , "03S", "03H", "03D", "03C"
+                , "04S", "04H", "04D", "04C"
+                , "05S", "05H", "05D", "05C"
+                , "06S", "06H", "06D", "06C"
+                , "07S", "07H", "07D", "07C"
+                , "08S", "08H", "08D", "08C"
+                , "09S", "09H", "09D", "09C"
+                , "10S", "10H", "10D", "10C"
+                , "JaS", "JaH", "JaD", "JaC"
+                , "QuS", "QuH", "QuD", "QuC"
+                , "KiS", "KiH", "KiD", "KiC"
+                 ]
 # _USER
 dealerUser = "Dealer"
 player1User = "Player 1"
@@ -90,6 +97,9 @@ dealer  = [dealerUser,       dealersPot,  dealerCards,  dealerResult]
 
 players = [player1, player2, player3, player4]
 
+#queue/shuffleDeck pointers
+tail = 0
+head = 51
 def ShuffleDeck(STANDARDDECK):
     global shuffledDeck
     global head
@@ -104,8 +114,8 @@ def ShuffleDeck(STANDARDDECK):
 def CardIntegration(playerCards, nCards):
     global shuffledDeck
     global head
-    found = False
     for i in range(nCards):
+        found = False
         while not found:
             card = str(input("Input card: "))
             if shuffledDeck.count(card) == 1:
@@ -121,11 +131,14 @@ def CardIntegration(playerCards, nCards):
 def DealCards(playerCards, nCards):
     global shuffledDeck
     global head
-    for i in range(nCards):
-        card = shuffledDeck[head]
-        shuffledDeck.pop(head)
-        head -= 1
-        playerCards.append(card)
+    if nCards > len(shuffledDeck) or nCards < 0:
+        print("nCards out of range")
+    else:
+        for i in range(nCards):
+            card = shuffledDeck[head]
+            shuffledDeck.pop(head)
+            head -= 1
+            playerCards.append(card)
     return playerCards
 
 
@@ -281,7 +294,9 @@ def BlackjackRound(players,dealer,isCardIntegration):
 
 
 
-
+######################################################################
+## Testing ###########################################################
+######################################################################
 
 
 

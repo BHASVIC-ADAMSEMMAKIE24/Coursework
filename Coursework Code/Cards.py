@@ -24,7 +24,6 @@ ORDEREDDECK =   [["AcS", "AcH", "AcD", "AcC"]  # [0]   Ace
 
 #ordered_Deck[value][suit]
 #print(ordered_Deck[ace][spades])
-
 STANDARDDECK =  ["AcS", "AcH", "AcD", "AcC"
                 , "02S", "02H", "02D", "02C"
                 , "03S", "03H", "03D", "03C"
@@ -40,32 +39,59 @@ STANDARDDECK =  ["AcS", "AcH", "AcD", "AcC"
                 , "KiS", "KiH", "KiD", "KiC"
                  ]
 
+shuffledDeck =  ["AcS", "AcH", "AcD", "AcC"
+                , "02S", "02H", "02D", "02C"
+                , "03S", "03H", "03D", "03C"
+                , "04S", "04H", "04D", "04C"
+                , "05S", "05H", "05D", "05C"
+                , "06S", "06H", "06D", "06C"
+                , "07S", "07H", "07D", "07C"
+                , "08S", "08H", "08D", "08C"
+                , "09S", "09H", "09D", "09C"
+                , "10S", "10H", "10D", "10C"
+                , "JaS", "JaH", "JaD", "JaC"
+                , "QuS", "QuH", "QuD", "QuC"
+                , "KiS", "KiH", "KiD", "KiC"
+                 ]
+
+# _USER
 dealerUser = "Dealer"
 player1User = "Player 1"
 player2User = "Player 2"
 player3User = "Player 3"
 player4User = "Player 4"
-totalPot = 0
+# _CURRENCY
+dealersPot = [0,0,0,0]
 player1Currency = 2000
 player2Currency = 2000
 player3Currency = 2000
 player4Currency = 2000
+# _CARDS
 dealerCards = []
 player1Cards = []
 player2Cards = []
 player3Cards = []
 player4Cards = []
+# _RESULT
 dealerResult = ""
 player1Result = ""
 player2Result = ""
 player3Result = ""
 player4Result = ""
-player1 = [player1User,player1Currency,player1Cards,player1Result]
-player2 = [player2User,player2Currency,player2Cards,player2Result]
-player3 = [player3User,player3Currency,player3Cards,player3Result]
-player4 = [player4User,player4Currency,player4Cards,player4Result]
-dealer = [dealerUser,totalPot,dealerCards,dealerResult]
-players = [player1,player2,player3,player4]
+
+# player constants
+_USER = 0
+_CURRENCY = 1
+_CARDS = 2
+_RESULT = 3
+#            _USER         _CURRENCY        _CARDS       _RESULT
+player1 = [player1User, player1Currency, player1Cards, player1Result]
+player2 = [player2User, player2Currency, player2Cards, player2Result]
+player3 = [player3User, player3Currency, player3Cards, player3Result]
+player4 = [player4User, player4Currency, player4Cards, player4Result]
+dealer  = [dealerUser,       dealersPot,  dealerCards,  dealerResult]
+
+players = [player1, player2, player3, player4]
 
 #queue pointers
 tail = 0
@@ -84,8 +110,8 @@ def ShuffleDeck(STANDARDDECK):
 def CardIntegration(playerCards, nCards):
     global shuffledDeck
     global head
-    found = False
     for i in range(nCards):
+        found = False
         while not found:
             card = str(input("Input card: "))
             if shuffledDeck.count(card) == 1:
@@ -101,11 +127,14 @@ def CardIntegration(playerCards, nCards):
 def DealCards(playerCards, nCards):
     global shuffledDeck
     global head
-    for i in range(nCards):
-        card = shuffledDeck[head]
-        shuffledDeck.pop(head)
-        head -= 1
-        playerCards.append(card)
+    if nCards > len(shuffledDeck) or nCards < 0:
+        print("nCards out of range")
+    else:
+        for i in range(nCards):
+            card = shuffledDeck[head]
+            shuffledDeck.pop(head)
+            head -= 1
+            playerCards.append(card)
     return playerCards
 
 
@@ -136,6 +165,14 @@ def CardValue(card, gamemode):
         print("gamemode error")
 
     return value
+
+def CardTotal(deck):
+    total = 0 # initialises total
+    for i in range(len(deck)): # cycles through each card in the players deck
+        total += int(CardValue(deck[i], "blackjack")) # adds the cards value on to the current total
+    return total
+
+CardTotal(players[0][_CARDS])
 def CardSuit(card):
     suit = card[2:]
     return suit
@@ -145,7 +182,7 @@ def CardSuit(card):
 # print(shuffledDeck)
 # ShuffleDeck(STANDARDDECK)
 # print(shuffledDeck[0])
-#print(str(cards[0][1]) , str(cards[1][0]))
+# print(str(cards[0][1]) , str(cards[1][0]))
 
 # ShuffleDeck(STANDARDDECK)
 # DealCards(player1,1)
@@ -166,8 +203,27 @@ def CardSuit(card):
 
 # print("Username: ", players[0][0])
 # print("Cards: ", CardValue(players[0][1][1], gamemode)+CardValue(players[0][1][0], gamemode))
-players.remove(player4)
-print(player4[0])
-print(len(players))
-players.append(player4)
-print(len(players))
+# players.remove(player4)
+###### player adding + removal #######
+# print(player4[0])
+# print(len(players))
+# players.append(player4)
+# print(len(players))
+
+######################################################################
+## Testing ###########################################################
+######################################################################
+
+
+
+
+
+
+
+
+
+
+
+
+
+
