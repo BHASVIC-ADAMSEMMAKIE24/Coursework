@@ -289,7 +289,7 @@ def BlackjackRound(players,dealer,isCardIntegration):
         while CardTotal(dealer[_CARDS]) < 17:
             DealCards(dealer[_CARDS], 1)
     BlackjackResult(players, dealerResult)
-    ## CalculateWinnings()
+    ## BJCalculateWinnings()
     ### Output players result and dealer result
     print(dealer[_USER], "Result:",dealer[_RESULT])
     for i in range(len(players)):
@@ -308,12 +308,36 @@ def BlackjackRound(players,dealer,isCardIntegration):
 ## ############################################## ##
 ####################################################
 
-def WinningsCalculation(players,dealersPot):
+def BJWinningsCalculation(players,dealersPot):
     for i in range (len(players)):
         if players[i][_RESULT] == "Win":
             players[i][_CURRENCY] += int((dealersPot[i]*2))
         elif players[i][_RESULT] == "Draw":
             players[i][_CURRENCY] += int(dealersPot[i])
+    return players
+
+def TotalPot(dealerPot):
+    i = 0
+    total = 0
+    for i in range(len(dealersPot)):
+        total += dealersPot[i]
+    return total
+
+
+
+def PKWinningsCalculation(players,dealersPot):
+    nDraws = 0
+    for i in range(len(players)):
+        if players[i][_RESULT] == "Draw":
+            nDraws += 1
+    if nDraws > 0:
+        for j in range(len(players)):
+            if players[j][_RESULT] == "Draw":
+                players[j][_CURRENCY] += (int(TotalPot(dealersPot)) // nDraws)
+    else:
+        for j in range(len(players)):
+            if players[j][_RESULT] == "Win":
+                players[j][_CURRENCY] += int(TotalPot(dealersPot))
     return players
 
 
