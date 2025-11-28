@@ -317,28 +317,26 @@ def BJWinningsCalculation(players,dealersPot):
     return players
 
 def TotalPot(dealerPot):
-    i = 0
     total = 0
     for i in range(len(dealersPot)):
         total += dealersPot[i]
     return total
 
-
-
-def PKWinningsCalculation(players,dealersPot):
-    nDraws = 0
+def PKWinningsCalulation(players,dealersPot):
+    nWinners = 0
     for i in range(len(players)):
-        if players[i][_RESULT] == "Draw":
-            nDraws += 1
-    if nDraws > 0:
-        for j in range(len(players)):
-            if players[j][_RESULT] == "Draw":
-                players[j][_CURRENCY] += (int(TotalPot(dealersPot)) // nDraws)
-    else:
-        for j in range(len(players)):
-            if players[j][_RESULT] == "Win":
-                players[j][_CURRENCY] += int(TotalPot(dealersPot))
+        if players[i][_RESULT] == "Draw" or players[i][_RESULT] == "Win":
+            nWinners += 1
+    for j in range(len(players)):
+        if players[j][_RESULT] == "Draw" or players[j][_RESULT] == "Win":
+            players[j][_CURRENCY] += (int(TotalPot(dealersPot)) // nWinners)
     return players
+
+
+
+
+
+
 
 
 ######################################################################
