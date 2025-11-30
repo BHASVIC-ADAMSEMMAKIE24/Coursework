@@ -233,7 +233,7 @@ def BlackjackHitStandCycle(players):
             if choice.lower() == "hit":
                 DealCards(players[i][_CARDS],1) # deals the player a card
                 print(players[i][_CARDS])   # outputs the new deck
-                if int(CardTotal(players[i][_CARDS], "blackjack")) > 21:
+                if int(CardTotal(players[i][_CARDS])) > 21:
                     players[i][_RESULT] = "Bust"
                     print(players[i][_RESULT])
 
@@ -244,7 +244,7 @@ def BlackjackHitStandCycle(players):
     return players
 
 
-def BlackjackResult(players,dealerResult):
+def BlackjackResult(players,dealer):
     dealerCardTotal = CardTotal(dealerCards)
     if dealerCardTotal > 21:
         dealerResult = "Bust"
@@ -316,13 +316,13 @@ def BJWinningsCalculation(players,dealersPot):
             players[i][_CURRENCY] += int(dealersPot[i])
     return players
 
-def TotalPot(dealerPot):
+def TotalPot(dealersPot):
     total = 0
     for i in range(len(dealersPot)):
         total += dealersPot[i]
     return total
 
-def PKWinningsCalulation(players,dealersPot):
+def PKWinningsCalculation(players,dealersPot):
     nWinners = 0
     for i in range(len(players)):
         if players[i][_RESULT] == "Draw" or players[i][_RESULT] == "Win":
