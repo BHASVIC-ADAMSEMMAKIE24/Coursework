@@ -114,6 +114,7 @@ def ShuffleDeck(STANDARDDECK):
     tail = 0
     shuffledDeck = STANDARDDECK
     random.shuffle(shuffledDeck)
+    return shuffledDeck
 
 
 
@@ -289,7 +290,7 @@ def BlackjackRound(players,dealer,isCardIntegration):
             DealCards(dealer[_CARDS], 1)
             print(dealer[_USER], "Cards:", dealer[_CARDS])
     BlackjackResult(players, dealer)
-    ## BJCalculateWinnings()
+    BJWinningsCalculation(players,dealersPot)
     ### Output players result and dealer result
     print(dealer[_USER], "Result:",dealer[_RESULT])
     for i in range(len(players)):
@@ -342,7 +343,8 @@ def PKWinningsCalculation(players,dealersPot):
 ## ###                                        ### ##
 ## ############################################## ##
 ####################################################
-def PlayerSetup(players):
+def PlayerSetup():
+    global players
     nPlayers = 0
     nPlayers = int(input("Enter number of players 1-4: "))
     while nPlayers < 1 or nPlayers > 4:
@@ -357,9 +359,8 @@ def PlayerSetup(players):
     elif nPlayers == 4:
         players = [player1,player2,player3,player4]
     for u in range(len(players)):
-        username = input(players[u][_USER], "Enter your username: ")
+        username = input(players[u][_USER] + " Enter your username: ")
         players[u][_USER] = username
-    return players
 
 def StartBlackjack(players,dealer):
     choice = input("Card Integration?")
@@ -368,7 +369,7 @@ def StartBlackjack(players,dealer):
     else:
         isCardIntegration = False
     nRounds = int(input("Enter number of rounds: "))
-    for i in range(nRounds):
+    for r in range(nRounds):
         BlackjackRound(players,dealer,isCardIntegration)
     return players
 
@@ -391,7 +392,7 @@ def Rules():
     print("Poker hand rankings:\nRoyal Flush: Ac, Ki, Qu, Ja, and 10, all of the same suit.\nStraight Flush: Any straight of the same suit. For example, JaC, 10C, 09C, 08C, 07C.\nFour of a Kind: Any four cards of the same value, plus another random card. For example, 08C, 08D, 08H, 08S, JaH.\nFull House: Three cards of one value and two cards of another value. For example, JaC, JaH, JaS, 02C, 02D.\nFlush: All cards of the same suit. The value doesnt matter.\nStraight: 5 cards of consecutive value but of different suits.\nThree of a Kind: Any three cards of the same value and two random cards. For example, 05C, 05S, 05H, 03C, JaD\nTwo Pair: Two pairs of cards of equal value and one random card. For example, 08S, 08D, 04C, 04H, JaS.\nPair: One pair of cards of equal value and three random cards. For example, QuD, QuH, 08S, 05C, 03H.\nHigh Card: No cards interact with other cards in any way, so the highest value card.")
 
 def Menu():
-    PlayerSetup(players)
+    PlayerSetup()
     choice = input("Enter your choice: (blackjack,rules,poker)\n)")
     if choice == "blackjack":
         StartBlackjack(players,dealer)
@@ -417,7 +418,7 @@ def Menu():
 ## ###                                        ### ##
 ## ############################################## ##
 ####################################################
-# initialise the pygame
+#initialise the pygame
 pygame.init()
 
 # create the screen (width(X),height(Y))
@@ -456,4 +457,4 @@ while running:
 ######################################################################
 ## Testing ###########################################################
 ######################################################################
-Rules()
+Menu()
