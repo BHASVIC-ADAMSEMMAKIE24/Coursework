@@ -183,7 +183,6 @@ def CardTotal(deck):
         total += int(CardValue(deck[i], "blackjack")) # adds the cards value on to the current total
     return total
 
-CardTotal(players[0][_CARDS])
 def CardSuit(card):
     suit = card[2:]
     return suit
@@ -245,12 +244,12 @@ def BlackjackHitStandCycle(players):
 
 
 def BlackjackResult(players,dealer):
-    dealerCardTotal = CardTotal(dealerCards)
+    dealerCardTotal = CardTotal(dealer[_CARDS])
     if dealerCardTotal > 21:
-        dealerResult = "Bust"
+        dealer[_RESULT] = "Bust"
     for i in range(len(players)):
         if players[i][_RESULT] != "Bust":
-            if dealerResult == "Bust":
+            if dealer[_RESULT] == "Bust":
                 players[i][_RESULT] = "Win"
             else:
                 if CardTotal(players[i][_CARDS]) < dealerCardTotal:
@@ -259,7 +258,7 @@ def BlackjackResult(players,dealer):
                     players[i][_RESULT] = "Draw"
                 else:
                     players[i][_RESULT] = "Win"
-    return players, dealerResult
+    return players, dealer
 
 def BlackjackRound(players,dealer,isCardIntegration):
     # Reseting variables for start of new round
@@ -286,9 +285,11 @@ def BlackjackRound(players,dealer,isCardIntegration):
     # Dealer hit stand cycle
     if CardTotal(dealer[_CARDS]) < 17:
         DealCards(dealer[_CARDS], 1)
+        print(dealer[_USER], "Cards:", dealer[_CARDS])
         while CardTotal(dealer[_CARDS]) < 17:
             DealCards(dealer[_CARDS], 1)
-    BlackjackResult(players, dealerResult)
+            print(dealer[_USER], "Cards:", dealer[_CARDS])
+    BlackjackResult(players, dealer)
     ## BJCalculateWinnings()
     ### Output players result and dealer result
     print(dealer[_USER], "Result:",dealer[_RESULT])
@@ -342,3 +343,7 @@ def PKWinningsCalculation(players,dealersPot):
 ######################################################################
 ## Testing ###########################################################
 ######################################################################
+dealersPot = [0,0,0,0] # total pot is 0
+print("Dealers Pot: ", dealersPot)
+print("Total Pot: ", TotalPot(dealersPot))
+
