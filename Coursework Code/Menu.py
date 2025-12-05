@@ -8,6 +8,89 @@ player4Currency = 2000
 import random
 import time
 import pygame
+
+# _USER
+dealerUser = "Dealer"
+player1User = "Player 1"
+player2User = "Player 2"
+player3User = "Player 3"
+player4User = "Player 4"
+# _CURRENCY
+dealersPot = [0,0,0,0]
+player1Currency = 2000
+player2Currency = 2000
+player3Currency = 2000
+player4Currency = 2000
+# _CARDS
+dealerCards = []
+player1Cards = []
+player2Cards = []
+player3Cards = []
+player4Cards = []
+# _RESULT
+dealerResult = ""
+player1Result = ""
+player2Result = ""
+player3Result = ""
+player4Result = ""
+
+# player constants
+_USER = 0
+_CURRENCY = 1
+_CARDS = 2
+_RESULT = 3
+#            _USER         _CURRENCY        _CARDS       _RESULT
+player1 = [player1User, player1Currency, player1Cards, player1Result]
+player2 = [player2User, player2Currency, player2Cards, player2Result]
+player3 = [player3User, player3Currency, player3Cards, player3Result]
+player4 = [player4User, player4Currency, player4Cards, player4Result]
+dealer  = [dealerUser,       dealersPot,  dealerCards,  dealerResult]
+
+players = [player1, player2, player3, player4]
+def ResetRound():
+    # # _USER
+    #  # (None)
+    # # _CURRENCY
+    # global dealersPot
+    # dealersPot = [0,0,0,0]
+    # # _CARDS
+    # global dealerCards
+    # global player1Cards
+    # global player2Cards
+    # global player3Cards
+    # global player4Cards
+    # dealerCards = []
+    # player1Cards = []
+    # player2Cards = []
+    # player3Cards = []
+    # player4Cards = []
+    # # _RESULT
+    # global dealerResult
+    # global player1Result
+    # global player2Result
+    # global player3Result
+    # global player4Result
+    # dealerResult = ""
+    # player1Result = ""
+    # player2Result = ""
+    # player3Result = ""
+    # player4Result = ""
+    global dealer
+    global dealersPot
+    global players
+    for i in range(len(players)):
+        players[i][_CARDS] = []
+        players[i][_RESULT] = ""
+    dealer[_CARDS] = []
+    dealer[_RESULT] = ""
+    dealersPot = [0,0,0,0]
+    dealer[_CURRENCY] = [0,0,0,0]
+
+
+
+
+    #return dealersPot, dealerCards, player1Cards, player2Cards, player3Cards, player4Cards, dealerResult, player1Result, player2Result, player3Result, player4Result
+
 ########################################################################################################################
 
 ####################################################
@@ -64,63 +147,17 @@ shuffledDeck =  ["AcS", "AcH", "AcD", "AcC"
                 , "QuS", "QuH", "QuD", "QuC"
                 , "KiS", "KiH", "KiD", "KiC"
                  ]
-# _USER
-dealerUser = "Dealer"
-player1User = "Player 1"
-player2User = "Player 2"
-player3User = "Player 3"
-player4User = "Player 4"
-# _CURRENCY
-dealersPot = [0,0,0,0]
-player1Currency = 2000
-player2Currency = 2000
-player3Currency = 2000
-player4Currency = 2000
-# _CARDS
-dealerCards = []
-player1Cards = []
-player2Cards = []
-player3Cards = []
-player4Cards = []
-# _RESULT
-dealerResult = ""
-player1Result = ""
-player2Result = ""
-player3Result = ""
-player4Result = ""
 
-# player constants
-_USER = 0
-_CURRENCY = 1
-_CARDS = 2
-_RESULT = 3
-#            _USER         _CURRENCY        _CARDS       _RESULT
-player1 = [player1User, player1Currency, player1Cards, player1Result]
-player2 = [player2User, player2Currency, player2Cards, player2Result]
-player3 = [player3User, player3Currency, player3Cards, player3Result]
-player4 = [player4User, player4Currency, player4Cards, player4Result]
-dealer  = [dealerUser,       dealersPot,  dealerCards,  dealerResult]
-
-players = [player1, player2, player3, player4]
-
-#queue/shuffleDeck pointers
-tail = 0
-head = 51
 def ShuffleDeck(STANDARDDECK):
     global shuffledDeck
-    global head
-    global tail
-    head = 51
-    tail = 0
     shuffledDeck = STANDARDDECK
     random.shuffle(shuffledDeck)
-    return shuffledDeck
+
 
 
 
 def CardIntegration(playerCards, nCards):
     global shuffledDeck
-    global head
     for i in range(nCards):
         found = False
         while not found:
@@ -131,20 +168,18 @@ def CardIntegration(playerCards, nCards):
                 print("Card does not exist in deck")
         shuffledDeck.remove(card)
         playerCards.append(card)
-    head -= nCards
     return playerCards
 
 
 def DealCards(playerCards, nCards):
     global shuffledDeck
-    global head
     if nCards > len(shuffledDeck) or nCards < 0:
         print("nCards out of range")
     else:
         for i in range(nCards):
-            card = shuffledDeck[head]
-            shuffledDeck.pop(head)
-            head -= 1
+            head = len(shuffledDeck)
+            card = shuffledDeck[head-1]
+            shuffledDeck.pop(head-1)
             playerCards.append(card)
     return playerCards
 
@@ -261,11 +296,6 @@ def BlackjackResult(players,dealer):
     return players, dealer
 
 def BlackjackRound(players,dealer,isCardIntegration):
-    # Reseting variables for start of new round
-    dealer[_CARDS] = []
-    dealer[_CURRENCY] = [0, 0, 0, 0]
-    for i in range(len(players)):
-        players[i][_CARDS] = []
     ShuffleDeck(STANDARDDECK)
     BlackjackAnte(players,dealersPot)
     if isCardIntegration:
@@ -370,6 +400,7 @@ def StartBlackjack(players,dealer):
         isCardIntegration = False
     nRounds = int(input("Enter number of rounds: "))
     for r in range(nRounds):
+        ResetRound()
         BlackjackRound(players,dealer,isCardIntegration)
     return players
 
@@ -418,43 +449,48 @@ def Menu():
 ## ###                                        ### ##
 ## ############################################## ##
 ####################################################
-#initialise the pygame
-pygame.init()
+# #initialise the pygame
+# pygame.init()
+#
+# # create the screen (width(X),height(Y))
+# screen = pygame.display.set_mode((1280,1024))
+#
+#
+# # Title and icon
+# pygame.display.set_caption('The Cards Collective')
+# # (32 pixel image from "flaticon.com") #"https://www.flaticon.com/free-icons/french-fries"
+# icon = pygame.image.load('icon.png')
+#
+# # Background Image            # https://indonesian-recipes.com/download/2030-version.html
+# background = pygame.image.load("background.png")
+#
+# running = True
+# while running:
+#   Menu()
+#     pygame.display.set_icon(icon)
+#     screen.blit(background, (0, 0))  # This displays the background to the program
+#     for event in pygame.event.get():
+#         if event.type == pygame.QUIT:
+#             running = False
+#
+#
+#
+#
+#
+#     pygame.display.update()
 
-# create the screen (width(X),height(Y))
-screen = pygame.display.set_mode((1280,1024))
 
+######################################################################
+## Testing ###########################################################
+######################################################################
 
-# Title and icon
-pygame.display.set_caption('The Cards Collective')
-# (32 pixel image from "flaticon.com") #"https://www.flaticon.com/free-icons/french-fries"
-icon = pygame.image.load('icon.png')
-
-# Background Image            # https://indonesian-recipes.com/download/2030-version.html
-background = pygame.image.load("background.png")
-
-running = True
-while running:
-    pygame.display.set_icon(icon)
-    screen.blit(background, (0, 0))  # This displays the background to the program
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-
-
-
-
-
-    pygame.display.update()
 
 
 ######################################################################
 ## Testing ###########################################################
 ######################################################################
 
-
-
-######################################################################
-## Testing ###########################################################
-######################################################################
 Menu()
+
+
+
